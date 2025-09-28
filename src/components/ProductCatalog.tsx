@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Search, Filter, ShoppingCart, Phone, Mail, Package, Grid, List } from 'lucide-react';
+import { Search, Filter, ShoppingCart, Phone, Mail, Package, Grid2x2 as Grid, List } from 'lucide-react';
 import { Language, CatalogProduct } from '../types';
 import { catalogProducts, productCategories } from '../data/catalogProducts';
 import { ProductCard } from './ProductCard';

@@ -38,3 +38,4 @@ export interface CatalogProduct {
   secoCode?: string;
   specifications?: string[];
   image?: string;
+}
