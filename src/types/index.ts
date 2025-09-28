@@ -27,3 +27,14 @@ export const languages: Language[] = [
   { code: 'ar', name: 'العربية', dir: 'rtl' },
   { code: 'en', name: 'English', dir: 'ltr' }
 ];
+
+export interface CatalogProduct {
+  id: string;
+  name: string;
+  description: string;
+  category: string;
+  price?: number;
+  inStock: boolean;
+  secoCode?: string;
+  specifications?: string[];
+  image?: string;

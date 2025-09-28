@@ -1,13 +1,16 @@
 import React, { useState, useRef } from 'react';
-import { Upload, Download, FileSpreadsheet, RefreshCw } from 'lucide-react';
+import { Upload, Download, FileSpreadsheet, RefreshCw, Package } from 'lucide-react';
 import { Product, Language, languages } from './types';
 import { readExcelFile, downloadExcelFile, createSampleData } from './utils/excelUtils';
 import { ExcelTable } from './components/ExcelTable';
 import { LanguageToggle } from './components/LanguageToggle';
+import { ProductCatalog } from './components/ProductCatalog';
+import { Navigation } from './components/Navigation';
 
 function App() {
   const [products, setProducts] = useState<Product[]>([]);
   const [language, setLanguage] = useState<Language>(languages[0]);
+  const [currentPage, setCurrentPage] = useState<'inventory' | 'catalog'>('inventory');
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string>('');
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -111,11 +114,19 @@ function App() {
           <div className="flex items-center justify-between h-16">
             <div className="flex items-center gap-4">
               <div className="p-2 bg-blue-100 rounded-lg">
-                <FileSpreadsheet className="w-8 h-8 text-blue-600" />
+                {currentPage === 'inventory' ? (
+                  <FileSpreadsheet className="w-8 h-8 text-blue-600" />
+                ) : (
+                  <Package className="w-8 h-8 text-blue-600" />
+                )}
               </div>
               <div>
-                <h1 className="text-2xl font-bold text-gray-900">{t.title}</h1>
-                <p className="text-sm text-gray-600">{t.subtitle}</p>
+                <h1 className="text-2xl font-bold text-gray-900">
+                  {currentPage === 'inventory' ? t.title : (isArabic ? 'كتالوج المنتجات' : 'Product Catalog')}
+                </h1>
+                <p className="text-sm text-gray-600">
+                  {currentPage === 'inventory' ? t.subtitle : (isArabic ? 'تصفح مجموعتنا من المعدات الكهربائية' : 'Browse our electrical equipment collection')}
+                </p>
               </div>
             </div>
             <LanguageToggle currentLang={language} onLanguageChange={setLanguage} />
@@ -123,7 +134,17 @@ function App() {
         </div>
       </header>
 
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      {/* Navigation */}
+      <Navigation 
+        currentPage={currentPage} 
+        onPageChange={setCurrentPage} 
+        language={language} 
+      />
+
+      {currentPage === 'catalog' ? (
+        <ProductCatalog language={language} />
+      ) : (
+        <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* File Upload Area */}
         <div className="mb-8">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -208,6 +229,7 @@ function App() {
           onQuantityChange={handleQuantityChange}
         />
       </main>
+      )}
     </div>
   );
 }
